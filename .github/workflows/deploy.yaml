@@ -1,0 +1,30 @@
+name: List S3 Bucket Objects
+
+on:
+  workflow_dispatch:      
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write          
+  contents: read
+
+jobs:
+  list-s3:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (assume role)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: List objects in S3 bucket
+        run: |
+          BUCKET_NAME="$AWS_S3_BUCKET_NAME"
+          echo "Listing objects in $BUCKET_NAME ..."
+          aws s3 ls s3://$BUCKET_NAME
