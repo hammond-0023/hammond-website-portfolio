@@ -1,48 +1,86 @@
-**Project Overview**
+# hammondmutambara.com
 
-A secure, high-performance static website hosted on AWS infrastructure, combining Amazon S3 for content storage, Route 53 for DNS management, CloudFront for content delivery, and GitHub Actions for automated deployment. The implementation uses Infrastructure as Code (IaC) with Terraform for consistent deployment and management.
+The source for my portfolio site and all the AWS infrastructure behind it. Nothing is created by hand in the AWS console: the site, the CDN, DNS, certificate and CI/CD access are all Terraform, and every change goes through Git.
 
-**Architeture Diagram**
+## How it works
 
-<img width="1197" height="560" alt="image" src="https://github.com/user-attachments/assets/502135ba-0250-419f-af7e-63d4f66a5750" />
+```mermaid
+flowchart LR
+  dev([Push to main]) --> gh[GitHub Actions]
+  gh -- "OIDC, no stored keys" --> s3[(Private S3 bucket)]
+  gh -- "invalidate cache" --> cf
+  visitor([Visitor]) --> r53[Route 53]
+  r53 --> cf[CloudFront + ACM certificate]
+  cf -- "Origin Access Control" --> s3
+```
 
-**Architecture Components**
+| Piece | What it does |
+|---|---|
+| S3 (private) | Holds the site files. Public access is blocked, and only this CloudFront distribution can read the bucket. Versioning is on, so a bad deploy can be rolled back. |
+| CloudFront | Serves the site over HTTPS from edge locations, with caching and security headers. |
+| ACM | Free TLS certificate for the root domain and `www`, validated by DNS and renewed automatically. |
+| Route 53 | A and AAAA alias records for the root domain and `www`. |
+| GitHub OIDC | Lets Actions sign in to AWS with short-lived credentials, so no AWS keys are stored in GitHub. |
+| Terraform | Defines all of the above. State is kept in a versioned, encrypted S3 bucket. |
 
-- Static Content Storage
-- Amazon S3 bucket configured for static website hosting
-- Publicly accessible content storage
-- Automatically scalable storage solution
+More detail is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
+## Repository layout
 
-**Content Delivery Network**
+```
+.
+├── site/                    # The website. Edit this to change what visitors see.
+│   └── index.html
+├── terraform/               # Infrastructure for the site (main stack)
+├── bootstrap/               # One-off: creates the bucket that stores Terraform state
+├── scripts/
+│   ├── discover-console-resources.sh   # Read-only inventory of what exists in AWS
+│   ├── set-github-vars.sh              # Copies Terraform outputs into GitHub variables
+│   └── deploy-site.sh                  # Manual deploy, same steps as CI
+├── docs/
+│   ├── ARCHITECTURE.md
+│   ├── RUNBOOK.md           # How to update the site, change infra, roll back
+│   └── MIGRATION.md         # Moving console-built resources to Terraform
+└── .github/workflows/
+    ├── deploy-site.yml      # site/ changes on main -> S3 + cache invalidation
+    └── terraform-plan.yml   # Pull requests -> terraform plan (read-only)
+```
 
-- CloudFront distribution for global content delivery
-- Edge locations for reduced latency
-- Automatic content caching
-- Integrated with S3 origin
+## Updating the site
 
-**Security Layer**
+1. Edit `site/index.html` (text, project links, certificates, results).
+2. Preview it locally: `python3 -m http.server 8000 --directory site`, then open <http://localhost:8000>.
+3. Commit and push to `main`. The **Deploy site** workflow uploads the files and clears the CloudFront cache.
 
-- ACM SSL/TLS certificates for HTTPS support
-- Automatic certificate renewal
-- Secure communication between clients and edge locations
+The page's project and certificate links live in one `LINKS` block near the bottom of `index.html`. Paste a URL there and that button appears. Leave it empty and the button stays hidden.
 
-**DNS Management**
-*
-- Route 53 hosted zone for domain management
-- A-record alias configuration for root domain
-- Automatic regional routing for optimal performance
+Step by step instructions, including rollback, are in [docs/RUNBOOK.md](docs/RUNBOOK.md).
 
-**Infrastructure Management**
+## Changing the infrastructure
 
-- Terraform configuration for consistent deployment
-- Version-controlled infrastructure code
-- Automated resource provisioning
-- Automated Deployment
+1. Create a branch and edit files in `terraform/`.
+2. Open a pull request. **Terraform plan** runs and shows what would change.
+3. After review, merge, then apply from your machine:
 
-**GitHub Actions CI/CD pipeline**
+```bash
+cd terraform
+terraform init -backend-config=backend.hcl
+terraform plan
+terraform apply
+```
 
-- Automated deployment on code changes
-- CloudFront cache invalidation
-- Version-controlled deployment process
+Applies are run locally on purpose, so the CI role stays read-only.
 
+## First-time setup
+
+Follow [docs/MIGRATION.md](docs/MIGRATION.md). In short: inventory what exists, run `bootstrap/`, run `terraform/`, copy the outputs into GitHub with `scripts/set-github-vars.sh`, then push.
+
+## Requirements
+
+- Terraform 1.10 or newer
+- AWS CLI signed in to the target account
+- GitHub CLI (`gh`) for `scripts/set-github-vars.sh`
+
+## Author
+
+Hammond Mutambara. [GitHub](https://github.com/hammond-0023) · [LinkedIn](https://linkedin.com/in/hammond-m)

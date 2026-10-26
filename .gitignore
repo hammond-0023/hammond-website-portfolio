@@ -1,0 +1,14 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+!*.tfvars.example
+terraform/backend.hcl
+tfplan
+
+# Editors and OS
+.DS_Store
+.vscode/
+.idea/

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Hammond Mutambara | Cloud Engineer for hire</title>
+  <meta name="description" content="Hammond Mutambara is a cloud engineer in Warsaw. I build AWS infrastructure with Terraform, ship it through CI/CD pipelines, and cut escalations by working with engineering teams.">
+  <meta name="theme-color" content="#EDF1EF">
+  <meta property="og:title" content="Hammond Mutambara | Cloud Engineer">
+  <meta property="og:description" content="Cloud infrastructure that deploys itself. AWS, Terraform and CI/CD, with results from leading a 14-person support team.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hammondmutambara.com">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2310201D'/%3E%3Ctext x='32' y='43' font-family='Arial' font-weight='700' font-size='28' text-anchor='middle' fill='%23F28C28'%3EHM%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --mist: #EDF1EF;
+      --paper: #F8FAF9;
+      --ink: #10201D;
+      --muted: #4E605B;
+      --teal: #17564C;
+      --signal: #F28C28;
+      --line: #C3D0CB;
+      --gutter: 1.5rem;
+
+      --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+      --text: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(242, 140, 40, .25); }
+    body {
+      margin: 0; background: var(--mist); color: var(--ink);
+      font-family: var(--text); font-size: 1.125rem; line-height: 1.7;
+      -webkit-font-smoothing: antialiased; overflow-x: hidden; overflow-wrap: break-word;
+    }
+    h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; padding: 0; }
+    ul, ol { list-style: none; }
+    a { color: inherit; }
+    button, .btn, summary, a { touch-action: manipulation; }
+    :focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; border-radius: 4px; }
+
+    .wrap {
+      width: 100%; max-width: calc(1160px + 2 * var(--gutter)); margin-inline: auto;
+      padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
+    }
+    .block { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
+    .block + .block { border-top: 1px solid var(--line); }
+
+    .skip {
+      position: absolute; left: -999px; top: .5rem; background: var(--ink); color: #fff;
+      padding: .5rem 1rem; border-radius: 6px; z-index: 10; font-family: var(--display);
+    }
+    .skip:focus { left: .5rem; }
+
+    /* ---------- Header ---------- */
+    .top { padding-block: 1.4rem; }
+    .top .wrap { display: flex; justify-content: space-between; align-items: center; gap: .5rem 1.5rem; flex-wrap: wrap; }
+    .mark { font-family: var(--display); font-weight: 800; font-size: 1.25rem; text-decoration: none; letter-spacing: -.02em; }
+    .top nav ul { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem 1.6rem; }
+    .top nav a {
+      font-family: var(--display); font-weight: 500; font-size: 1rem; text-decoration: none; color: var(--muted);
+      padding-block: .3rem; border-bottom: 2px solid transparent;
+    }
+    .top nav a:hover { color: var(--ink); border-bottom-color: var(--signal); }
+    .top nav a.cta {
+      color: var(--mist); background: var(--ink); border-radius: 999px; padding: .55rem 1.1rem; border: 0; font-weight: 600;
+    }
+    .top nav a.cta:hover { background: var(--teal); }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      font-family: var(--display); font-weight: 600; font-size: 1rem; line-height: 1; min-height: 48px;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: .95rem 1.5rem; border-radius: 999px; text-decoration: none; cursor: pointer;
+      border: 2px solid var(--ink); background: transparent; color: var(--ink);
+      transition: background-color .2s, color .2s, border-color .2s;
+    }
+    .btn:hover { background: var(--ink); color: var(--mist); }
+    .btn.solid { background: var(--ink); color: var(--mist); }
+    .btn.solid:hover { background: var(--teal); border-color: var(--teal); }
+
+    /* ---------- Hero ---------- */
+    .hero { padding-top: clamp(2.5rem, 7vw, 5.5rem); padding-bottom: clamp(3rem, 7vw, 5.5rem); }
+    h1 {
+      font-family: var(--display); font-weight: 800; font-stretch: 82%;
+      font-size: clamp(3rem, 10.5vw, 8rem); line-height: .93; letter-spacing: -.035em;
+      max-width: 11em;
+    }
+    h1 .second { color: var(--teal); display: block; }
+    .hero-sub { max-width: 34em; margin-top: clamp(1.5rem, 3.5vw, 2.4rem); font-size: clamp(1.15rem, 2vw, 1.4rem); line-height: 1.55; }
+    .hero-actions { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 2rem; }
+    .creds {
+      margin-top: clamp(2.5rem, 5vw, 4rem); padding-top: 1.4rem; border-top: 1px solid var(--line);
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem 2rem;
+    }
+    .creds dt { font-family: var(--display); font-weight: 600; font-size: .95rem; color: var(--muted); }
+    .creds dd { font-family: var(--display); font-weight: 600; font-size: 1.1rem; line-height: 1.35; }
+
+    /* ---------- Section scaffolding ---------- */
+    h2.title {
+      font-family: var(--display); font-weight: 700; font-stretch: 88%;
+      font-size: clamp(2rem, 5vw, 3.4rem); letter-spacing: -.03em; line-height: 1;
+    }
+    .intro { margin-top: 1rem; max-width: 34em; color: var(--muted); }
+    .split { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(0, 3fr); gap: 1.5rem clamp(2rem, 6vw, 5rem); }
+    .split > .head { position: sticky; top: 1.5rem; align-self: start; }
+
+    .dash li { position: relative; padding-left: 1.3rem; margin-bottom: .5rem; }
+    .dash li::before { content: ''; position: absolute; left: 0; top: .78em; width: .6rem; height: 2px; background: var(--signal); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1rem; }
+    .tags li {
+      font-family: var(--display); font-weight: 500; font-size: .88rem; line-height: 1;
+      padding: .45rem .7rem; border-radius: 6px; background: #DDE6E2; color: var(--teal);
+    }
+
+    /* ---------- What I do ---------- */
+    .offer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: .6rem 2.5rem; padding-block: 1.8rem; border-top: 1px solid var(--line); }
+    .offer:first-child { border-top: 0; padding-top: 0; }
+    .offer h3 { font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: -.02em; line-height: 1.2; }
+    .offer p { max-width: 36em; }
+    .offer .tags { margin-top: .9rem; }
+
+    /* ---------- Results ---------- */
+    .result { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: .2rem 2rem; align-items: baseline; padding-block: 1.4rem; border-top: 1px solid var(--line); }
+    .result:first-child { border-top: 0; padding-top: 0; }
+    .result .fig { font-family: var(--display); font-weight: 800; font-stretch: 85%; font-size: clamp(2.6rem, 5vw, 3.6rem); line-height: 1; letter-spacing: -.03em; color: var(--teal); }
+    .result h3 { font-family: var(--display); font-weight: 700; font-size: 1.3rem; letter-spacing: -.01em; line-height: 1.25; }
+    .result p { color: var(--muted); font-size: 1.02rem; line-height: 1.5; margin-top: .2rem; max-width: 36em; }
+
+    /* ---------- Proof ---------- */
+    .trace { margin-top: 2rem; background: var(--ink); color: #E6EEEB; border-radius: 18px; padding: clamp(1.4rem, 4vw, 2.8rem); }
+    .trace-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .trace h3 { font-family: var(--display); font-weight: 700; font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -.02em; line-height: 1.1; }
+    .trace-head p { color: #A9BBB6; font-size: 1rem; max-width: 34em; margin-top: .5rem; line-height: 1.55; }
+    .trace-controls { display: flex; gap: .7rem; flex-wrap: wrap; }
+    .trace .btn { border-color: #E6EEEB; color: #E6EEEB; padding: .8rem 1.2rem; font-size: .95rem; }
+    .trace .btn:hover:not(:disabled) { background: #E6EEEB; color: var(--ink); }
+    .trace .btn.solid { background: var(--signal); border-color: var(--signal); color: var(--ink); }
+    .trace .btn.solid:hover:not(:disabled) { background: #FFB066; border-color: #FFB066; }
+    .trace .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    .path { display: flex; align-items: stretch; }
+    .hop { flex: 0 0 auto; width: clamp(120px, 17%, 190px); border: 2px solid #3A514B; border-radius: 12px; padding: 1rem; transition: border-color .25s, background-color .25s; font-family: var(--display); }
+    .hop b { display: block; font-size: 1.15rem; font-weight: 700; line-height: 1.2; }
+    .hop small { display: block; color: #A9BBB6; font-size: .92rem; margin-top: .25rem; line-height: 1.35; }
+    .hop .state { display: block; margin-top: .6rem; font-size: .85rem; color: var(--signal); min-height: 1.2em; }
+    .hop.on { border-color: var(--signal); background: rgba(242, 140, 40, .12); }
+    .wire { flex: 1 1 auto; align-self: center; height: 2px; background: #3A514B; transition: background-color .25s, box-shadow .25s; min-width: 14px; }
+    .wire.on { background: var(--signal); box-shadow: 0 0 12px rgba(242, 140, 40, .7); }
+
+    .log { margin-top: 1.8rem; padding-top: 1.3rem; border-top: 1px solid #2C3F3A; min-height: 9.5rem; font-size: 1rem; line-height: 1.5; }
+    .log li { display: grid; grid-template-columns: 1.8rem 1fr; gap: .5rem; padding-block: .3rem; color: #C8D6D2; }
+    .log li::before { content: '›'; color: var(--signal); font-family: var(--display); font-weight: 700; }
+    .log li.latest { color: #fff; }
+    .log .idle { color: #8DA19B; grid-template-columns: 1fr; }
+    .log .idle::before { content: none; }
+
+    .proof-note { margin-top: 2rem; display: grid; grid-template-columns: minmax(0, 1.4fr) auto; gap: 1.2rem 2rem; align-items: end; }
+    .proof-note ul { max-width: 40em; }
+
+    .proj { border-top: 1px solid var(--line); }
+    .projects { margin-top: 3rem; }
+    .proj:last-child { border-bottom: 1px solid var(--line); }
+    summary { cursor: pointer; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    .proj summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .3rem 1.5rem; padding-block: 1.5rem; align-items: center; }
+    .proj h3 { font-family: var(--display); font-weight: 700; font-size: 1.45rem; letter-spacing: -.02em; line-height: 1.2; }
+    .proj .one { grid-column: 1; color: var(--muted); font-size: 1.02rem; line-height: 1.5; }
+    .proj .toggle {
+      grid-column: 2; grid-row: 1 / span 2; width: 2.6rem; height: 2.6rem; border-radius: 50%;
+      border: 2px solid var(--ink); display: grid; place-items: center;
+      font-family: var(--display); font-size: 1.4rem; line-height: 1; transition: transform .25s, background-color .2s, color .2s;
+    }
+    .proj summary:hover .toggle { background: var(--ink); color: var(--mist); }
+    .proj[open] .toggle { transform: rotate(45deg); }
+    .proj .detail { padding-bottom: 1.8rem; max-width: 40em; }
+    .proj .shows { font-family: var(--display); font-weight: 600; color: var(--teal); margin-bottom: .8rem; }
+
+    /* ---------- Links (shown only when a URL is set in the script) ---------- */
+    .links { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.3rem; }
+    .links[hidden], .links a[hidden], .verify[hidden] { display: none; }
+    .links a {
+      font-family: var(--display); font-weight: 600; font-size: .95rem; line-height: 1; min-height: 44px;
+      display: inline-flex; align-items: center; padding: .7rem 1.1rem; border-radius: 999px;
+      border: 2px solid var(--ink); text-decoration: none; transition: background-color .2s, color .2s;
+    }
+    .links a:hover { background: var(--ink); color: var(--mist); }
+    .verify {
+      display: inline-block; margin-top: .3rem; font-family: var(--display); font-weight: 600; font-size: .98rem;
+      color: var(--teal); text-decoration: none; border-bottom: 2px solid var(--signal); padding-block: .15rem;
+    }
+    .verify:hover { color: var(--ink); }
+
+    /* ---------- Why me ---------- */
+    .why { display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr); gap: 2rem 3rem; align-items: start; }
+    .portrait { position: relative; aspect-ratio: 4 / 5; border-radius: 8px; overflow: hidden; background: var(--teal); }
+    .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .portrait .initials { position: absolute; inset: 0; display: none; place-items: center; font-family: var(--display); font-weight: 800; font-size: 4rem; color: var(--mist); }
+    .reasons > div + div { margin-top: 1.8rem; }
+    .reasons h3 { font-family: var(--display); font-weight: 700; font-size: 1.4rem; letter-spacing: -.02em; line-height: 1.2; }
+    .reasons p { margin-top: .4rem; max-width: 36em; }
+
+    /* ---------- Toolbox ---------- */
+    .skills > div { display: grid; grid-template-columns: minmax(150px, 1fr) minmax(0, 3fr); gap: .3rem 2rem; padding-block: 1.1rem; border-top: 1px solid var(--line); }
+    .skills > div:last-child { border-bottom: 1px solid var(--line); }
+    .skills dt { font-family: var(--display); font-weight: 700; font-size: 1.1rem; }
+
+    /* ---------- Background ---------- */
+    .row { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: .2rem 2rem; padding-block: 1.2rem; border-top: 1px solid var(--line); }
+    .row:first-child { border-top: 0; padding-top: 0; }
+    .row .when { font-family: var(--display); font-weight: 600; font-size: 1rem; color: var(--muted); padding-top: .2rem; }
+    .row h3 { font-family: var(--display); font-weight: 700; font-size: 1.25rem; letter-spacing: -.01em; line-height: 1.25; }
+    .row p { color: var(--muted); font-size: 1.02rem; line-height: 1.5; }
+    .subhead { font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: var(--teal); margin: 2.2rem 0 1rem; }
+
+    /* ---------- Contact ---------- */
+    .contact { background: var(--ink); color: var(--mist); }
+    .contact h2 { font-family: var(--display); font-weight: 700; font-stretch: 88%; font-size: clamp(2.2rem, 6vw, 4.2rem); letter-spacing: -.03em; line-height: 1; max-width: 12em; }
+    .contact .lead { margin-top: 1.2rem; color: #A9BBB6; max-width: 32em; }
+    .mail {
+      display: inline-block; margin-top: 1.8rem; font-family: var(--display); font-weight: 700; font-stretch: 85%;
+      font-size: clamp(1.7rem, 6.2vw, 4.4rem); letter-spacing: -.03em; line-height: 1.05;
+      text-decoration: none; overflow-wrap: anywhere; border-bottom: 4px solid var(--signal);
+    }
+    .mail:hover { color: var(--signal); }
+    .elsewhere { margin-top: 2.2rem; display: flex; flex-wrap: wrap; gap: .6rem 2.2rem; font-family: var(--display); font-weight: 500; }
+    .elsewhere a { text-decoration: none; border-bottom: 2px solid #3A514B; padding-bottom: .15rem; }
+    .elsewhere a:hover { border-color: var(--signal); }
+    .foot { margin-top: 3.5rem; color: #8DA19B; font-size: .95rem; font-family: var(--display); }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 860px) {
+      .split { grid-template-columns: 1fr; }
+      .split > .head { position: static; }
+      .offer { grid-template-columns: 1fr; }
+      .why { grid-template-columns: 1fr; }
+      .portrait { max-width: 220px; }
+      .proof-note { grid-template-columns: 1fr; }
+      .skills > div { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 680px) {
+      .path { flex-direction: column; align-items: stretch; }
+      .hop { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .1rem 1rem; padding: .85rem 1rem; }
+      .hop b, .hop small { grid-column: 1; }
+      .hop small { margin-top: 0; }
+      .hop .state { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; text-align: right; min-height: 0; }
+      .wire { width: 2px; height: 18px; min-width: 0; align-self: center; flex: 0 0 auto; }
+      .trace-controls { width: 100%; }
+      .trace-controls .btn { flex: 1 1 0; }
+      .log { min-height: 11rem; }
+      .result { grid-template-columns: 1fr; gap: .1rem; }
+    }
+    @media (max-width: 560px) {
+      :root { --gutter: 1.1rem; }
+      body { font-size: 1.05rem; line-height: 1.65; }
+      .top { padding-block: 1rem .4rem; }
+      .top nav { width: 100%; }
+      .top nav ul { gap: 0 1.2rem; }
+      .top nav a { padding-block: .7rem; }
+      .top nav a.cta { padding: .7rem 1.1rem; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; padding-block: 1.05rem; }
+      .trace { border-radius: 14px; padding: 1.2rem 1rem; }
+      .log { font-size: .98rem; }
+      .log li { grid-template-columns: 1.4rem 1fr; }
+      .proof-note .btn { width: 100%; }
+      .proj summary { padding-block: 1.2rem; gap: .3rem 1rem; }
+      .proj h3 { font-size: 1.25rem; }
+      .proj .toggle { width: 2.8rem; height: 2.8rem; }
+      .elsewhere { flex-direction: column; gap: .2rem; }
+      .elsewhere a { align-self: flex-start; padding-block: .6rem; }
+      .contact .btn { width: 100%; }
+    }
+    @media (max-width: 360px) {
+      h1 { font-size: 2.8rem; }
+      .mail { font-size: 1.5rem; }
+    }
+    @media (hover: none) {
+      .btn:hover { background: transparent; color: var(--ink); }
+      .btn.solid:hover { background: var(--ink); color: var(--mist); border-color: var(--ink); }
+      .trace .btn:hover:not(:disabled) { background: transparent; color: #E6EEEB; }
+      .trace .btn.solid:hover:not(:disabled) { background: var(--signal); border-color: var(--signal); color: var(--ink); }
+      .proj summary:hover .toggle { background: transparent; color: var(--ink); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+    @media print {
+      body { background: #fff; }
+      .top nav, .trace, .hero-actions, .contact .foot { display: none; }
+      .contact { background: none; color: #000; }
+      .mail, .contact .lead { color: #000; }
+      details > * { display: block; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="mark" href="#top">Hammond Mutambara</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="#offer">What I do</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#proof">Proof</a></li>
+          <li><a href="#why">About</a></li>
+          <li><a class="cta" href="#contact">Let's talk</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="wrap">
+        <h1>I build cloud infrastructure <span class="second">that deploys itself.</span></h1>
+        <p class="hero-sub">
+          I'm Hammond, a cloud engineer in Warsaw. I turn manual AWS work into Terraform and pipelines your
+          team can trust, and I bring ten years of IT experience to the problems your customers actually feel.
+        </p>
+        <div class="hero-actions">
+          <a class="btn solid" href="mailto:hammondcarlsen@gmail.com?subject=Cloud%20engineering%20conversation">Start a conversation</a>
+          <a class="btn" href="#proof">See the proof</a>
+        </div>
+
+        <dl class="creds">
+          <div><dt>Certified</dt><dd>AWS Solutions Architect – Associate and Cloud Practitioner</dd></div>
+          <div><dt>Right now</dt><dd>Leading 14 technical support specialists at Oura</dd></div>
+          <div><dt>Builds with</dt><dd>AWS, Terraform, Docker and GitHub Actions</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- WHAT I DO -->
+    <section class="block" id="offer">
+      <div class="wrap split">
+        <div class="head">
+          <h2 class="title">What I can do for your team</h2>
+        </div>
+        <div>
+          <article class="offer">
+            <h3>Ship changes safely</h3>
+            <div>
+              <p>Push to main and it goes live. I build GitHub Actions pipelines that deploy, clear caches and sign in to AWS with short-lived OIDC credentials instead of stored keys.</p>
+              <ul class="tags"><li>GitHub Actions</li><li>OIDC</li><li>Git</li></ul>
+            </div>
+          </article>
+          <article class="offer">
+            <h3>Rebuild any environment from code</h3>
+            <div>
+              <p>Your AWS setup lives in Terraform, so it is reviewable, repeatable and easy to hand over. No one has to remember what was clicked in the console.</p>
+              <ul class="tags"><li>Terraform</li><li>CloudFormation</li><li>IAM</li></ul>
+            </div>
+          </article>
+          <article class="offer">
+            <h3>Run workloads on AWS</h3>
+            <div>
+              <p>Serverless and container designs that scale without extra work, from a static site on S3 and CloudFront to services on ECS Fargate.</p>
+              <ul class="tags"><li>Lambda</li><li>DynamoDB</li><li>ECS Fargate</li><li>S3</li><li>CloudFront</li><li>Docker</li></ul>
+            </div>
+          </article>
+          <article class="offer">
+            <h3>Find root causes, not symptoms</h3>
+            <div>
+              <p>I work with engineers on backend, API and cloud issues, using Linux and API diagnostics and platform metrics to stop incidents coming back.</p>
+              <ul class="tags"><li>Linux</li><li>Python</li><li>Bash</li><li>CloudWatch</li></ul>
+            </div>
+          </article>
+          <article class="offer">
+            <h3>Lead the people on the front line</h3>
+            <div>
+              <p>I lead 14 support specialists with clear workflows, coaching and shared metrics. Customers get faster answers, and engineers get fewer interruptions.</p>
+              <ul class="tags"><li>Team leadership</li><li>Process design</li><li>Escalation management</li></ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="block" id="results">
+      <div class="wrap split">
+        <div class="head">
+          <h2 class="title">Results</h2>
+          <p class="intro">What changed under my team at Oura, where I've led 14 technical specialists since December 2023.</p>
+        </div>
+        <div>
+          <article class="result">
+            <div class="fig">30%</div>
+            <div><h3>Fewer engineering escalations</h3><p>Standard troubleshooting workflows and automation scripts handled more cases at the first line.</p></div>
+          </article>
+          <article class="result">
+            <div class="fig">25%</div>
+            <div><h3>Faster investigations</h3><p>Linux and API-based diagnostic steps replaced guesswork.</p></div>
+          </article>
+          <article class="result">
+            <div class="fig">21%</div>
+            <div><h3>Faster average response time</h3><p>Clearer processes and better tooling for the whole team.</p></div>
+          </article>
+          <article class="result">
+            <div class="fig">17%</div>
+            <div><h3>Higher customer satisfaction</h3><p>Quicker, more accurate answers showed up in the scores.</p></div>
+          </article>
+          <article class="result">
+            <div class="fig">15%</div>
+            <div><h3>Fewer recurring incidents</h3><p>Working with engineering on backend, API and cloud-integrated issues.</p></div>
+          </article>
+          <article class="result">
+            <div class="fig">12%</div>
+            <div><h3>Better platform reliability</h3><p>Root causes found in operational metrics and passed to product and cloud teams.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROOF -->
+    <section class="block" id="proof">
+      <div class="wrap">
+        <h2 class="title">Proof you can click</h2>
+        <p class="intro">Claims are cheap, so here is working infrastructure. The first piece is the page you are reading.</p>
+
+        <div class="trace" aria-labelledby="trace-title">
+          <div class="trace-head">
+            <div>
+              <h3 id="trace-title">How this page reached you</h3>
+              <p>This site runs on the setup below. Send a request to follow it through, then push a change to see the cache reset.</p>
+            </div>
+            <div class="trace-controls">
+              <button class="btn solid" id="sendBtn" type="button">Send a request</button>
+              <button class="btn" id="deployBtn" type="button">Push to main</button>
+            </div>
+          </div>
+
+          <div class="path" id="path">
+            <div class="hop" data-node="0"><b>Your browser</b><small>Asks for hammondmutambara.com</small><span class="state"></span></div>
+            <div class="wire"></div>
+            <div class="hop" data-node="1"><b>Route 53</b><small>DNS alias to CloudFront</small><span class="state"></span></div>
+            <div class="wire"></div>
+            <div class="hop" data-node="2"><b>CloudFront</b><small>HTTPS and edge cache</small><span class="state" id="cacheState">Cache empty</span></div>
+            <div class="wire"></div>
+            <div class="hop" data-node="3"><b>S3</b><small>Private bucket, read by CloudFront only</small><span class="state"></span></div>
+          </div>
+
+          <ol class="log" id="log" aria-live="polite">
+            <li class="idle">Waiting for a request.</li>
+          </ol>
+        </div>
+
+        <div class="proof-note">
+          <ul class="dash">
+            <li>Everything is Terraform: private S3 bucket, ACM certificate, CloudFront, Route 53 and the deploy role.</li>
+            <li>Every push to main deploys through GitHub Actions with OIDC and clears the CloudFront cache.</li>
+            <li>No AWS keys are stored anywhere in the repository.</li>
+          </ul>
+          <a class="btn" href="https://github.com/hammond-0023/hammond-website-portfolio" target="_blank" rel="noopener noreferrer">Read the code on GitHub</a>
+        </div>
+
+        <div class="projects">
+          <details class="proj">
+            <summary>
+              <h3>Serverless URL shortener</h3>
+              <p class="one">A serverless AWS app that turns long links into short ones.</p>
+              <span class="toggle" aria-hidden="true">+</span>
+            </summary>
+            <div class="detail">
+              <p class="shows">What it shows: I can design, build and automate a complete AWS app.</p>
+              <ul class="dash">
+                <li>Serverless design on AWS, so there are no servers to patch or scale.</li>
+                <li>All infrastructure is defined in Terraform and can be rebuilt from scratch.</li>
+                <li>GitHub Actions tests and deploys every change from the repository.</li>
+              </ul>
+              <ul class="tags"><li>AWS</li><li>Serverless</li><li>Terraform</li><li>GitHub Actions</li></ul>
+              <p class="links">
+                <a data-link="urlShortener" href="#" target="_blank" rel="noopener noreferrer" hidden>View the code</a>
+                <a data-link="urlShortenerDemo" href="#" target="_blank" rel="noopener noreferrer" hidden>Try it live</a>
+              </p>
+            </div>
+          </details>
+
+          <details class="proj">
+            <summary>
+              <h3>Three-tier app on ECS Fargate (in progress)</h3>
+              <p class="one">A containerised web, application and data stack, built to run at low cost.</p>
+              <span class="toggle" aria-hidden="true">+</span>
+            </summary>
+            <div class="detail">
+              <p class="shows">What it shows: I can run containers on AWS with production habits and a small bill.</p>
+              <ul class="dash">
+                <li>Web, application and data tiers running as containers on ECS Fargate.</li>
+                <li>Terraform defines the networking, services and permissions in its own repository.</li>
+                <li>GitHub Actions deploys through OIDC, so no long-lived AWS keys are stored.</li>
+              </ul>
+              <ul class="tags"><li>ECS</li><li>Fargate</li><li>Docker</li><li>Terraform</li><li>GitHub Actions</li><li>OIDC</li></ul>
+              <p class="links">
+                <a data-link="ecsApp" href="#" target="_blank" rel="noopener noreferrer" hidden>View the code</a>
+              </p>
+            </div>
+          </details>
+
+          <details class="proj">
+            <summary>
+              <h3>Serverless data processing pipeline</h3>
+              <p class="one">Files uploaded to S3 are processed by Lambda and stored in DynamoDB.</p>
+              <span class="toggle" aria-hidden="true">+</span>
+            </summary>
+            <div class="detail">
+              <p class="shows">What it shows: event-driven design with least-privilege security.</p>
+              <ul class="dash">
+                <li>S3 uploads trigger Lambda functions for real-time processing.</li>
+                <li>Lambda code with robust error handling writes results to DynamoDB.</li>
+                <li>IAM roles and policies follow least privilege, and Terraform deploys the whole stack.</li>
+              </ul>
+              <ul class="tags"><li>Lambda</li><li>S3</li><li>DynamoDB</li><li>IAM</li><li>Terraform</li></ul>
+              <p class="links">
+                <a data-link="pipeline" href="#" target="_blank" rel="noopener noreferrer" hidden>View the code</a>
+              </p>
+            </div>
+          </details>
+
+          <details class="proj">
+            <summary>
+              <h3>Dockerized web app on ECS</h3>
+              <p class="one">A containerised web app running as a managed Fargate service.</p>
+              <span class="toggle" aria-hidden="true">+</span>
+            </summary>
+            <div class="detail">
+              <p class="shows">What it shows: image to running service, with infrastructure as code.</p>
+              <ul class="dash">
+                <li>Built the Docker image on EC2 and pushed it to DockerHub.</li>
+                <li>Terraform provisions the ECS cluster, IAM roles and security groups.</li>
+                <li>An ECS task definition pulls the image and runs it on Fargate.</li>
+              </ul>
+              <ul class="tags"><li>Docker</li><li>ECS</li><li>Fargate</li><li>EC2</li><li>Terraform</li></ul>
+              <p class="links">
+                <a data-link="ecsWeb" href="#" target="_blank" rel="noopener noreferrer" hidden>View the code</a>
+                <a data-link="ecsImage" href="#" target="_blank" rel="noopener noreferrer" hidden>Docker image</a>
+              </p>
+            </div>
+          </details>
+
+          <details class="proj">
+            <summary>
+              <h3>PowerofMath, a full-stack web app</h3>
+              <p class="one">A responsive web app with a serverless AWS backend.</p>
+              <span class="toggle" aria-hidden="true">+</span>
+            </summary>
+            <div class="detail">
+              <p class="shows">What it shows: I can build the product as well as the platform under it.</p>
+              <ul class="dash">
+                <li>Responsive HTML and CSS interface built from modular components.</li>
+                <li>DynamoDB data model for flexible, fast retrieval.</li>
+                <li>Secure API endpoints on Lambda and API Gateway.</li>
+              </ul>
+              <ul class="tags"><li>HTML and CSS</li><li>JavaScript</li><li>Lambda</li><li>DynamoDB</li><li>API Gateway</li></ul>
+              <p class="links">
+                <a data-link="powerofmath" href="#" target="_blank" rel="noopener noreferrer" hidden>View the code</a>
+                <a data-link="powerofmathDemo" href="#" target="_blank" rel="noopener noreferrer" hidden>Try it live</a>
+              </p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY ME -->
+    <section class="block" id="why">
+      <div class="wrap split">
+        <div class="head">
+          <h2 class="title">Why work with me</h2>
+        </div>
+        <div class="why">
+          <figure class="portrait">
+            <img src="chel.jpg" alt="Portrait of Hammond Mutambara" width="520" height="650"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+            <span class="initials" aria-hidden="true">HM</span>
+          </figure>
+          <div class="reasons">
+            <div>
+              <h3>I know both sides of the ticket</h3>
+              <p>I came up through IT support and system administration before moving into cloud engineering. I design systems with the people who run them, and the people who rely on them, in mind.</p>
+            </div>
+            <div>
+              <h3>If I do something twice, I script it</h3>
+              <p>Most of my results above started as work someone was doing by hand. I turn repeat work into code, documentation and workflows that the whole team can use.</p>
+            </div>
+            <div>
+              <h3>I keep learning in the open</h3>
+              <p>Two AWS certifications in 2025, and projects on GitHub that you can read line by line. I'm based in Warsaw, Poland.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLBOX -->
+    <section class="block" id="toolbox">
+      <div class="wrap split">
+        <div class="head">
+          <h2 class="title">Toolbox</h2>
+        </div>
+        <dl class="skills">
+          <div><dt>Cloud</dt><dd>AWS: EC2, S3, Lambda, ECS, Fargate, CloudFront, Route 53, DynamoDB, IAM, CloudWatch</dd></div>
+          <div><dt>Containers</dt><dd>Docker, Kubernetes, AWS ECS</dd></div>
+          <div><dt>Infrastructure as code</dt><dd>Terraform, CloudFormation</dd></div>
+          <div><dt>CI/CD</dt><dd>Git, GitHub Actions, automated deployments</dd></div>
+          <div><dt>Scripting</dt><dd>Python, Bash</dd></div>
+          <div><dt>Networking</dt><dd>TCP/IP, DNS, DHCP, VPN and firewalls, LAN/WAN design, Cisco and Juniper</dd></div>
+          <div><dt>Systems</dt><dd>Linux (Ubuntu, CentOS), Windows Server, Active Directory and Group Policy, VMware, VirtualBox</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- BACKGROUND -->
+    <section class="block" id="background">
+      <div class="wrap split">
+        <div class="head">
+          <h2 class="title">Where I've done it</h2>
+        </div>
+        <div>
+          <div class="row">
+            <div class="when">Dec 2023 to now</div>
+            <div><h3>Oura Ring</h3><p>Technical Support Team Lead. Remote, leading 14 specialists.</p></div>
+          </div>
+          <div class="row">
+            <div class="when">2021 to 2023</div>
+            <div><h3>Foundever</h3><p>Technical Support Engineer and System Administrator. AWS, Linux, networking and security in Warsaw.</p></div>
+          </div>
+          <div class="row">
+            <div class="when">Mar 2017 to Jun 2021</div>
+            <div><h3>TelOne</h3><p>Technical Support Engineer. Active Directory, patching, networks and virtualisation in Zimbabwe.</p></div>
+          </div>
+          <div class="row">
+            <div class="when">Jan 2016 to Jul 2017</div>
+            <div><h3>Nuestra Computers</h3><p>IT Specialist. Servers, hardware and LAN/WAN support in Zimbabwe.</p></div>
+          </div>
+
+          <p class="subhead">Credentials</p>
+          <div class="row">
+            <div class="when">July 2025</div>
+            <div>
+              <h3>AWS Certified Solutions Architect – Associate</h3>
+              <a class="verify" data-link="saa" href="#" target="_blank" rel="noopener noreferrer" hidden>Verify this credential</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="when">March 2025</div>
+            <div>
+              <h3>AWS Certified Cloud Practitioner</h3>
+              <a class="verify" data-link="ccp" href="#" target="_blank" rel="noopener noreferrer" hidden>Verify this credential</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="when">2021 to 2024</div>
+            <div><h3>Bachelor of Information Technology</h3><p>Warsaw University of Business</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="block contact" id="contact">
+      <div class="wrap">
+        <h2>Have a cloud problem or an open role?</h2>
+        <p class="lead">Tell me what you're trying to build or fix. I reply to every email, and a few lines about your setup is enough to start.</p>
+        <a class="mail" href="mailto:hammondcarlsen@gmail.com?subject=Cloud%20engineering%20conversation">hammondcarlsen@gmail.com</a>
+        <div class="elsewhere">
+          <a href="tel:+48666998608">+48 666 998 608</a>
+          <a href="https://linkedin.com/in/hammond-m" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://github.com/hammond-0023" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="foot">© <span id="year">2026</span> Hammond Mutambara</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // ---------------------------------------------------------------
+      // LINKS: paste a full URL between the quotes to show that link.
+      // Anything left as '' stays hidden, so there are never dead links.
+      // ---------------------------------------------------------------
+      var LINKS = {
+        urlShortener:     '',  // GitHub repo of the URL shortener
+        urlShortenerDemo: '',  // live URL of the shortener, if it is still running
+        ecsApp:           '',  // GitHub repo of the ECS Fargate three-tier app
+        pipeline:         '',  // GitHub repo of the serverless data pipeline
+        ecsWeb:           '',  // GitHub repo of the Dockerized ECS web app
+        ecsImage:         'https://hub.docker.com/r/hammond0023/chelsea',
+        powerofmath:      '',  // GitHub repo of PowerofMath
+        powerofmathDemo:  '',  // live URL of PowerofMath
+        saa:              'https://www.credly.com/badges/80d88844-2115-43f6-a99a-8ff1603e2fc1/public_url',
+        ccp:              'https://www.credly.com/badges/7573515f-2127-451e-b8de-897ec1bd49e3/linked_in_profile'
+      };
+      document.querySelectorAll('[data-link]').forEach(function (a) {
+        var url = LINKS[a.getAttribute('data-link')];
+        if (url) { a.href = url; a.hidden = false; }
+      });
+      document.querySelectorAll('.links').forEach(function (box) {
+        box.hidden = !box.querySelector('a:not([hidden])');
+      });
+
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var nodes = document.querySelectorAll('.hop');
+      var wires = document.querySelectorAll('.wire');
+      var log = document.getElementById('log');
+      var cacheState = document.getElementById('cacheState');
+      var sendBtn = document.getElementById('sendBtn');
+      var deployBtn = document.getElementById('deployBtn');
+      var warm = false;
+      var busy = false;
+
+      var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, reduce ? 0 : ms); }); };
+
+      function clearLit() {
+        nodes.forEach(function (n) { n.classList.remove('on'); });
+        wires.forEach(function (w) { w.classList.remove('on'); });
+      }
+      function light(node, wire) {
+        clearLit();
+        nodes[node].classList.add('on');
+        if (wire !== null && wire !== undefined) wires[wire].classList.add('on');
+      }
+      function say(text) {
+        var idle = log.querySelector('.idle');
+        if (idle) idle.remove();
+        Array.prototype.forEach.call(log.children, function (li) { li.classList.remove('latest'); });
+        var li = document.createElement('li');
+        li.className = 'latest';
+        li.textContent = text;
+        log.appendChild(li);
+      }
+      function setCache(isWarm) {
+        warm = isWarm;
+        cacheState.textContent = isWarm ? 'Cache warm' : 'Cache empty';
+      }
+      function lock(v) { busy = v; sendBtn.disabled = v; deployBtn.disabled = v; }
+
+      async function sendRequest() {
+        if (busy) return;
+        lock(true);
+        log.innerHTML = '';
+        var step = 900;
+
+        light(0, null);
+        say('Your browser asks for hammondmutambara.com.');
+        await sleep(step);
+
+        light(1, 0);
+        say('Route 53 answers with the CloudFront distribution through an alias record.');
+        await sleep(step);
+
+        light(2, 1);
+        if (warm) {
+          say('CloudFront has the file in its edge cache, so it answers over HTTPS without going to S3.');
+          await sleep(step);
+          light(0, 1);
+          say('Page delivered from the cache.');
+        } else {
+          say('CloudFront checks its edge cache over HTTPS and finds nothing.');
+          await sleep(step);
+
+          light(3, 2);
+          say('It fetches index.html from the private S3 bucket, using Origin Access Control.');
+          await sleep(step);
+
+          light(2, 2);
+          setCache(true);
+          say('CloudFront stores the file at the edge and sends it on.');
+          await sleep(step);
+
+          light(0, 1);
+          say('Page delivered. The next request will be served from the cache.');
+        }
+        await sleep(500);
+        lock(false);
+      }
+
+      async function pushToMain() {
+        if (busy) return;
+        lock(true);
+        log.innerHTML = '';
+        clearLit();
+        say('You push a change to main on GitHub.');
+        await sleep(800);
+        light(3, null);
+        say('GitHub Actions signs in with OIDC and uploads the new files to the S3 bucket.');
+        await sleep(1000);
+        light(2, 2);
+        setCache(false);
+        say('The workflow invalidates the CloudFront cache. The next request goes back to S3 for the new version.');
+        await sleep(600);
+        lock(false);
+      }
+
+      sendBtn.addEventListener('click', sendRequest);
+      deployBtn.addEventListener('click', pushToMain);
+
+      // Play the first request when the proof section scrolls into view.
+      var proof = document.getElementById('trace-title');
+      if ('IntersectionObserver' in window && proof) {
+        var seen = false;
+        new IntersectionObserver(function (entries, io) {
+          if (!seen && entries[0].isIntersecting) { seen = true; io.disconnect(); sendRequest(); }
+        }, { threshold: 0.6 }).observe(proof);
+      }
+    })();
+  </script>
+</body>
+</html>
